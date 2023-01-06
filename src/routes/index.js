@@ -6,6 +6,7 @@ const multerUpload = require("../middle/upload");
 
 const auth = require("../controllers/auth");
 const jenis = require("../controllers/jenisBantuan");
+const detail = require("../controllers/detailBantuan"); 
 
 //LOGIN
 router.post("/login", auth.login);
@@ -27,6 +28,9 @@ router.get("/jenis", jenis.getAllJenisBantuan);
 router.post("/jenis/create", jenis.addJenisBantuan);
 //DELETE JENIS BANTUAN
 router.delete("/jenis/delete/:id", jenis.deleteJenisBantuan);
+
+//CREATE BANTUAN
+router.post('/bantuan/create', detail.addBantuan)
 
 
 
