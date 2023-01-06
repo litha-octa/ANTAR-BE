@@ -161,6 +161,28 @@ const getUserByRole = (role) => {
   });
 };
 
+const getAllUser = () => {
+  const qs =
+    "SELECT user.id, user.username, role.name AS 'role' from user JOIN role ON user.role = role.id ";
+  return new Promise((resolve, reject) => {
+    dbConn.query(qs, (err, result) => {
+      if (err) {
+        reject({ status: 500 });
+      } else {
+        if (result.length === 0)
+          return reject({
+            status: 401,
+            success: false,
+            msg: "This account does not exist",
+          });
+        resolve(result);
+      }
+    });
+  });
+};
+
+
+
 
 module.exports = {
   login,
@@ -168,4 +190,5 @@ module.exports = {
   updateUserById,
   getUserByRole,
   deleteUser,
+  getAllUser,
 };

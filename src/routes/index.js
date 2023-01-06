@@ -5,9 +5,7 @@ const multerUpload = require("../middle/upload");
 
 
 const auth = require("../controllers/auth");
-// const profile = require("../controllers/profile");
-// const review =require("../controllers/review")
-// const sentiment =require('../controllers/sentiment');
+const jenis = require("../controllers/jenisBantuan");
 
 //LOGIN
 router.post("/login", auth.login);
@@ -17,8 +15,19 @@ router.post("/register", auth.register);
 router.patch("/user/update/:id", multerUpload.any(), auth.updateUserById);
 //GET USER BY ROLE
 router.get("/user/role/:role", auth.getUserByRole);
+//GET ALL USER 
+router.get("/user", auth.getAllUser);
 // DELETE USER
 router.delete('/user/delete/:id', auth.deleteUser);
+
+
+//GET ALL JENIS bANTUAN
+router.get("/jenis", jenis.getAllJenisBantuan);
+//CREATE JENIS BANTUAN 
+router.post("/jenis/create", jenis.addJenisBantuan);
+//DELETE JENIS BANTUAN
+router.delete("/jenis/delete/:id", jenis.deleteJenisBantuan);
+
 
 
 // // UPDATE Profile

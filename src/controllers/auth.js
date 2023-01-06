@@ -87,10 +87,24 @@ const deleteUser = (req, res) => {
     });
 };
 
+const getAllUser = (req, res) => {
+  authModel
+    .getAllUser()
+    .then((data) => {
+      writeResponse(res, null, 201, {
+        data,
+      });
+    })
+    .catch((err) => {
+      writeError(res, 500, err);
+    });
+};
+
 module.exports = {
   login,
   register,
   updateUserById,
   getUserByRole,
   deleteUser,
+  getAllUser,
 };
