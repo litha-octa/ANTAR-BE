@@ -19,7 +19,7 @@ const getAllJenisBantuan = (req, res) => {
     .getAllJenisBantuan()
     .then((data) => {
       writeResponse(res, null, 201, {
-        message: "Jenis Bantuan Berhasil Ditambah",
+        message: "Jenis Bantuan Berhasil Ditemukan",
         data,
       });
     })

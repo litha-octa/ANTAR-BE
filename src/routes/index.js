@@ -31,6 +31,9 @@ router.delete("/jenis/delete/:id", jenis.deleteJenisBantuan);
 
 //CREATE BANTUAN
 router.post('/bantuan/create', detail.addBantuan)
+router.get("/bantuan", detail.getAllBantuan)
+router.get("/bantuan/:id", detail.getBantuanByCode);
+router.delete("/bantuan/delete/:id", detail.deleteDetailBantuan);
 
 
 

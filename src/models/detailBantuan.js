@@ -3,8 +3,8 @@ const dbConn = require("./../../config/db.config");
 
 const addBantuan = (body) => {
   return new Promise((resolve, reject) => {
-    const checkUser = `SELECT * FROM detail_bantuan WHERE code = ? OR id_relawan = ? OR id_penerima = ?`;
-    const checkData = [body.code, body.id_relawan, body.id_penerima];
+    const checkUser = `SELECT * FROM detail_bantuan WHERE code = ?`;
+    const checkData = [body.code];
 
     const qs = "INSERT INTO detail_bantuan SET ?";
 
@@ -17,7 +17,7 @@ const addBantuan = (body) => {
           if (body.code === result[0].code) {
             reject({
               success: false,
-              conflict: "code, id_relawan, id_penerima",
+              conflict: "code",
               msg: "data sudah tersedia",
               status: 409,
             });
@@ -36,6 +36,68 @@ const addBantuan = (body) => {
   });
 };
 
-module.exports={
-    addBantuan,
-}
+const deleteDetailBantuan = (id) => {
+  const qs =
+    "DELETE FROM detail_bantuan WHERE code = ? ; DELETE FROM penerima_bantuan WHERE code_bantuan = ?; DELETE FROM relawan_bantuan WHERE code_bantuan = ?";
+  return new Promise((resolve, reject) => {
+    dbConn.query(qs, id, (err, result) => {
+      if (err) {
+        reject({ status: 500 });
+      } else {
+        if (result.length === 0)
+          return reject({
+            status: 404,
+            success: false,
+            msg: "data not found",
+          });
+        resolve(result);
+      }
+    });
+  });
+};
+
+const getAllBantuan = () => {
+  const qs ='SELECT detail_bantuan.code, detail_bantuan.title, jenis_bantuan.nama AS jenis, detail_bantuan.status, detail_bantuan.start_date, detail_bantuan.finish_date from detail_bantuan JOIN jenis_bantuan ON detail_bantuan.id_jenis = jenis_bantuan.id'
+  return new Promise((resolve, reject) => {
+    dbConn.query(qs, (err, result) => {
+       if (err) {
+        reject({ status: 500 });
+      } else {
+        if (result.length === 0)
+          return reject({
+            status: 401,
+            success: false,
+            msg: "Data Bantuan Tidak Ditemukan",
+          });
+        resolve(result);
+      }
+    });
+  });
+};
+
+const getBantuanByCode = (id) => {
+  const qs =
+    "SELECT detail_bantuan.code, detail_bantuan.title, jenis_bantuan.nama AS jenis, detail_bantuan.status, detail_bantuan.start_date, detail_bantuan.finish_date from detail_bantuan JOIN jenis_bantuan ON detail_bantuan.id_jenis = jenis_bantuan.id WHERE detail_bantuan.code = ? ";
+  return new Promise((resolve, reject) => {
+    dbConn.query(qs,id, (err, result) => {
+      if (err) {
+        reject({ status: 500 });
+      } else {
+        if (result.length === 0)
+          return reject({
+            status: 401,
+            success: false,
+            msg: "Data Bantuan Tidak Ditemukan",
+          });
+        resolve(result);
+      }
+    });
+  });
+};
+
+module.exports = {
+  addBantuan,
+  deleteDetailBantuan,
+  getAllBantuan,
+  getBantuanByCode,
+};
