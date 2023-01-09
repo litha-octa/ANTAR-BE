@@ -1,12 +1,12 @@
 const dbConn = require("./../../config/db.config");
 // const bcrypt = require("bcrypt");
 
-const addBantuan = (body) => {
+const addPenerimaBantuan = (body) => {
   return new Promise((resolve, reject) => {
-    const checkUser = `SELECT * FROM detail_bantuan WHERE code = ?`;
-    const checkData = [body.code];
+    const checkUser = `SELECT * FROM penerima_bantuan WHERE code = ? OR nik = ?`;
+    const checkData = [body.code, body.nik];
 
-    const qs = "INSERT INTO detail_bantuan SET ?";
+    const qs = "INSERT INTO penerima_bantuan SET ?";
 
     dbConn.query(checkUser, checkData, (err, result) => {
       if (err) {
@@ -14,7 +14,7 @@ const addBantuan = (body) => {
       } else {
         if (result.length > 0) {
           console.log(result);
-          if (body.code === result[0].code) {
+          if (body.code === result[0].code && body.nik ===result[0].nik) {
             reject({
               success: false,
               conflict: "code",
@@ -36,9 +36,45 @@ const addBantuan = (body) => {
   });
 };
 
+const addBantuan = (body) => {
+  return new Promise((resolve, reject) => {
+    const checkUser = `SELECT * FROM detail_bantuan WHERE code = ?`;
+    const checkData = [body.code];
+
+    const qs = "INSERT INTO detail_bantuan SET ?";
+
+    dbConn.query(checkUser, checkData, (err, result) => {
+      if (err) {
+        reject({ status: 500 });
+      } else {
+        if (result.length > 0) {
+          console.log(result);
+          if (body.code === result[0].code) {
+            reject({
+              success: false,
+              conflict: "code",
+              msg: "data sudah tersedia",
+              status: 409,
+            });
+          }
+        } else {
+          dbConn.query(qs, body, (err, result) => {
+            if (err) {
+              reject({ status: 500 });
+            } else {
+              resolve(result);
+            }
+          });
+        }
+      }
+    });
+  });
+};
+
+
 const deleteDetailBantuan = (id) => {
   const qs =
-    "DELETE FROM detail_bantuan WHERE code = ? ; DELETE FROM penerima_bantuan WHERE code_bantuan = ?; DELETE FROM relawan_bantuan WHERE code_bantuan = ?";
+    "DELETE FROM detail_bantuan WHERE code = ? ; DELETE FROM penerima_bantuan WHERE code = ?; DELETE FROM relawan_bantuan WHERE code = ?";
   return new Promise((resolve, reject) => {
     dbConn.query(qs, id, (err, result) => {
       if (err) {
@@ -97,6 +133,7 @@ const getBantuanByCode = (id) => {
 
 module.exports = {
   addBantuan,
+  addPenerimaBantuan,
   deleteDetailBantuan,
   getAllBantuan,
   getBantuanByCode,

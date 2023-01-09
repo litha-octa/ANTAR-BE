@@ -15,6 +15,21 @@ const addBantuan = (req, res) => {
     });
 };
 
+const addPenerimaBantuan = (req, res) => {
+  detail
+    .addPenerimaBantuan(req.body)
+    .then((data) => {
+      writeResponse(res, null, 200, {
+        message: "Data pemberian bantuan berhasil tersimpan",
+        data,
+      });
+    })
+    .catch((err) => {
+      writeError(res, err.status, err.msg);
+    });
+};
+
+
 const getAllBantuan = (req, res) => {
   detail
     .getAllBantuan()
@@ -67,9 +82,10 @@ const deleteDetailBantuan = (req, res) => {
 };
 
 
-module.exports={
-    addBantuan,
-    getAllBantuan,
-    getBantuanByCode,
-    deleteDetailBantuan,
-}
+module.exports = {
+  addBantuan,
+  addPenerimaBantuan,
+  getAllBantuan,
+  getBantuanByCode,
+  deleteDetailBantuan,
+};
