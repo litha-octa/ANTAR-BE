@@ -5,7 +5,7 @@ const multerUpload = require("../middle/upload");
 
 
 const auth = require("../controllers/auth");
-const jenis = require("../controllers/jenisBantuan");
+const jenis = require('../controllers/jenisBantuan')
 const detail = require("../controllers/detailBantuan"); 
 
 //LOGIN

@@ -1,5 +1,5 @@
 const { writeResponse, writeError } = require("../helpers/response");
-const jenis = require("../models/jenisBantuan");
+const jenis = require('../models/jenisBantuan')
 
 const addJenisBantuan = (req, res) => {
  jenis
