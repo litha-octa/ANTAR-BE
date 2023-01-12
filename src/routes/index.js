@@ -7,6 +7,7 @@ const multerUpload = require("../middle/upload");
 const auth = require("../controllers/auth");
 const jenis = require('../controllers/jenisBantuan')
 const detail = require("../controllers/detailBantuan"); 
+const kabinda = require("../controllers/kabinda")
 
 //LOGIN
 router.post("/login", auth.login);
@@ -31,31 +32,18 @@ router.delete("/jenis/delete/:id", jenis.deleteJenisBantuan);
 
 //CREATE BANTUAN
 router.post('/bantuan/create', detail.addBantuan)
-router.get("/bantuan", detail.getAllBantuan)
 router.post("/bantuan/penerima", detail.addPenerimaBantuan);
+router.post("/bantuan/relawan", detail.addRelawanBantuan);
 router.get("/bantuan/:id", detail.getBantuanByCode);
+router.get("/bantuan", detail.getAllBantuan);
+router.get("/bantuan/riwayat/:id", detail.getRelawanInEvent);
 router.delete("/bantuan/delete/:id", detail.deleteDetailBantuan);
 
-
-
-// // UPDATE Profile
-// router.patch('/user/update/:id', multerUpload.any(), profile.updateUserById);
-// //GET USER BY NIK
-// router.get("/user/:nik", profile.getUserByNik);
-// //GET ALL USER
-// router.get("/user", profile.getAllUser);
-
-// //GET REVIEW BY ID
-// router.post("/user-review/create/", review.createReview);
-// router.get("/user-review/by/:id", review.getReviewByUser);
-// router.get("/user-review/:id", review.getReviewById);
-
-// router.get("/user-review", review.getAllReview);
-
-
-// router.get('/sentiment-data/:id', sentiment.getCountSentiment);
-
-// router.get("/user/:nik", profile.getUserToken);
+router.post('/kabinda', kabinda.createKabinda);
+router.patch("/kabinda/:id", multerUpload.any(), kabinda.updateKabindaById);
+router.delete("/kabinda/:id", kabinda.deleteKabinda);
+router.get("/kabinda/:id", kabinda.getKabindaById);
+router.get("/kabinda", kabinda.getKabinda);
 
 
 module.exports = router;
