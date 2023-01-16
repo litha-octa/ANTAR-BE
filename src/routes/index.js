@@ -31,8 +31,8 @@ router.post("/jenis/create", jenis.addJenisBantuan);
 router.delete("/jenis/delete/:id", jenis.deleteJenisBantuan);
 
 //CREATE BANTUAN
-router.post('/bantuan/create', detail.addBantuan)
-router.post("/bantuan/penerima", detail.addPenerimaBantuan);
+router.post("/bantuan/create", multerUpload.any(), detail.addBantuan);
+router.post("/bantuan/penerima", multerUpload.any(), detail.addPenerimaBantuan);
 router.post("/bantuan/relawan", detail.addRelawanBantuan);
 router.get("/bantuan/:id", detail.getBantuanByCode);
 router.get("/bantuan", detail.getAllBantuan);

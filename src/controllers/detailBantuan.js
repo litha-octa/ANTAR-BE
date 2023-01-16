@@ -2,8 +2,11 @@ const { writeResponse, writeError } = require("../helpers/response");
 const detail = require("../models/detailBantuan");
 
 const addBantuan = (req, res) => {
+   const { files } = req;
+   const img = files.length > 0 ? `/images/${files[0].filename}` : null;
+   const data = files.length > 0 ? { ...req.body, img } : { ...req.body };
   detail
-    .addBantuan(req.body)
+    .addBantuan(data)
     .then((data) => {
       writeResponse(res, null, 200, {
         message: "Data pemberian bantuan berhasil tersimpan",

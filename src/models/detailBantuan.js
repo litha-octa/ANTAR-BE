@@ -21,8 +21,16 @@ const addPenerimaBantuan = (body) => {
               msg: "data sudah tersedia",
               status: 409,
             });
-          }
-        }else{
+          }else{
+          dbConn.query(qs, body, (err, result) => {
+            if (err) {
+              reject({ status: 500 });
+            } else {
+              resolve(result);
+            }
+          });
+        }
+        }else if (result.length===0){
           dbConn.query(qs, body, (err, result) => {
             if (err) {
               reject({ status: 500 });
