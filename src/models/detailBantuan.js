@@ -46,26 +46,34 @@ const addPenerimaBantuan = (body) => {
 
 const addRelawanBantuan = (body) => {
   return new Promise((resolve, reject) => {
-    // const checkUser = `SELECT * FROM relawan_bantuan WHERE code = ? OR id = ?`;
-    // const checkData = [body.code, body.id];
+    const checkUser = `SELECT * FROM relawan_bantuan WHERE code = ? OR id = ?`;
+    const checkData = [body.code, body.id];
 
     const qs = "INSERT INTO relawan_bantuan SET ?";
 
-    // dbConn.query(checkUser, checkData, (err, result) => {
-    //   if (err) {
-    //     reject({ status: 500 });
-    //   } else {
-    //     if (result.length > 0) {
-    //       console.log(result);
-    //       if (body.code === result[0].code && body.id === result[0].id) {
-    //         reject({
-    //           success: false,
-    //           conflict: "code",
-    //           msg: "data sudah tersedia",
-    //           status: 409,
-    //         });
-    //       }
-    //     } else if (result.length===0) {
+    dbConn.query(checkUser, checkData, (err, result) => {
+      if (err) {
+        reject({ status: 500 });
+      } else {
+        if (result.length > 0) {
+          console.log(result);
+          if (body.code === result[0].code && body.id === result[0].id) {
+            reject({
+              success: false,
+              conflict: "code",
+              msg: "data sudah tersedia",
+              status: 409,
+            });
+          }else{
+            dbConn.query(qs, body, (err, result) => {
+              if (err) {
+                reject({ status: 500 });
+              } else {
+                resolve(result);
+              }
+            });
+          }
+        } else if (result.length===0) {
           dbConn.query(qs, body, (err, result) => {
             if (err) {
               reject({ status: 500 });
@@ -73,11 +81,9 @@ const addRelawanBantuan = (body) => {
               resolve(result);
             }
           });
-        })
+        }
       }
-//     });
-//   });
-// };
+    })})}
 
 const addBantuan = (body) => {
   return new Promise((resolve, reject) => {
