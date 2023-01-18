@@ -8,6 +8,7 @@ const auth = require("../controllers/auth");
 const jenis = require('../controllers/jenisBantuan')
 const detail = require("../controllers/detailBantuan"); 
 const kabinda = require("../controllers/kabinda")
+const posda = require("../controllers/posda");
 
 //LOGIN
 router.post("/login", auth.login);
@@ -44,6 +45,11 @@ router.patch("/kabinda/:id", multerUpload.any(), kabinda.updateKabindaById);
 router.delete("/kabinda/:id", kabinda.deleteKabinda);
 router.get("/kabinda/:id", kabinda.getKabindaById);
 router.get("/kabinda", kabinda.getKabinda);
+
+router.post ('/posda',posda.createPosda )
+router.delete("/posda/:id", posda.deletePosda);
+router.get("/posda/kabinda/:id", posda.getPosdaByKabinda);
+router.get("/posda/:id", posda.getPosdaById);
 
 
 module.exports = router;

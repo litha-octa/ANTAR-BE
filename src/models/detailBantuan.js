@@ -21,7 +21,17 @@ const addPenerimaBantuan = (body) => {
               msg: "data sudah tersedia",
               status: 409,
             });
-          }else{
+          }
+          else if (body.code === result[0].code || body.nik ===result[0].nik) {
+           dbConn.query(qs, body, (err, result) => {
+             if (err) {
+               reject({ status: 500 });
+             } else {
+               resolve(result);
+             }
+           });
+          }
+          else{
           dbConn.query(qs, body, (err, result) => {
             if (err) {
               reject({ status: 500 });
@@ -64,7 +74,16 @@ const addRelawanBantuan = (body) => {
               msg: "data sudah tersedia",
               status: 409,
             });
-          }else{
+          }else if (body.code === result[0].code || body.id === result[0].id) {
+           dbConn.query(qs, body, (err, result) => {
+             if (err) {
+               reject({ status: 500 });
+             } else {
+               resolve(result);
+             }
+           });
+          }
+          else{
             dbConn.query(qs, body, (err, result) => {
               if (err) {
                 reject({ status: 500 });
@@ -105,8 +124,16 @@ const addBantuan = (body) => {
               msg: "data sudah tersedia",
               status: 409,
             });
+          } else {
+            dbConn.query(qs, body, (err, result) => {
+              if (err) {
+                reject({ status: 500 });
+              } else {
+                resolve(result);
+              }
+            });
           }
-        } else {
+        } else if(result.length === 0) {
           dbConn.query(qs, body, (err, result) => {
             if (err) {
               reject({ status: 500 });
