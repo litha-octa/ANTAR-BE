@@ -65,6 +65,20 @@ const getUserByRole = (req, res) => {
     });
 };
 
+const getUserById = (req, res) => {
+  const id = req.params.id;
+  authModel
+    .getUserById(id)
+    .then((data) => {
+        writeResponse(res, null, 201, {
+          data,
+        });
+    })
+    .catch((err) => {
+      writeError(res, 500, err);
+    });
+};
+
 const deleteUser = (req, res) => {
   const id = req.params.id;
   authModel
@@ -105,6 +119,7 @@ module.exports = {
   register,
   updateUserById,
   getUserByRole,
+  getUserById,
   deleteUser,
   getAllUser,
 };

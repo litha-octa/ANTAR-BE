@@ -147,10 +147,70 @@ const addBantuan = (body) => {
   });
 };
 
+const deleteAllDataBantuan = (id) => {
+  const qs =
+    "DELETE FROM detail_bantuan WHERE code = ? ; DELETE FROM penerima_bantuan WHERE code = ?; DELETE FROM relawan_bantuan WHERE code = ?";
+  return new Promise((resolve, reject) => {
+    dbConn.query(qs, id, (err, result) => {
+      if (err) {
+        reject({ status: 500 });
+      } else {
+        if (result.length === 0)
+          return reject({
+            status: 404,
+            success: false,
+            msg: "data not found",
+          });
+        resolve(result);
+      }
+    });
+  });
+};
+
 
 const deleteDetailBantuan = (id) => {
   const qs =
-    "DELETE FROM detail_bantuan WHERE code = ? ; DELETE FROM penerima_bantuan WHERE code = ?; DELETE FROM relawan_bantuan WHERE code = ?";
+    "DELETE FROM detail_bantuan WHERE code = ? ";
+  return new Promise((resolve, reject) => {
+    dbConn.query(qs, id, (err, result) => {
+      if (err) {
+        reject({ status: 500 });
+      } else {
+        if (result.length === 0)
+          return reject({
+            status: 404,
+            success: false,
+            msg: "data not found",
+          });
+        resolve(result);
+      }
+    });
+  });
+};
+
+const deleteRelawanBantuan = (id) => {
+  const qs =
+    "DELETE FROM relawan_bantuan WHERE code = ?";
+  return new Promise((resolve, reject) => {
+    dbConn.query(qs, id, (err, result) => {
+      if (err) {
+        reject({ status: 500 });
+      } else {
+        if (result.length === 0)
+          return reject({
+            status: 404,
+            success: false,
+            msg: "data not found",
+          });
+        resolve(result);
+      }
+    });
+  });
+};
+
+const deletePenerimaBantuan = (id) => {
+  const qs =
+    "DELETE FROM penerima_bantuan WHERE code = ?";
   return new Promise((resolve, reject) => {
     dbConn.query(qs, id, (err, result) => {
       if (err) {
@@ -255,5 +315,8 @@ module.exports = {
   getAllBantuan,
   getBantuanByCode,
   getRelawanInEvent,
+deleteAllDataBantuan,
   deleteDetailBantuan,
+deletePenerimaBantuan,
+deleteRelawanBantuan,
 };

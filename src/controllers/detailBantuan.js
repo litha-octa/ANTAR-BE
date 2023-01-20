@@ -116,6 +116,71 @@ const deleteDetailBantuan = (req, res) => {
     });
 };
 
+const deletePenerimaBantuan = (req, res) => {
+  const id = req.params.id;
+  detail
+    .deletePenerimaBantuan(id)
+    .then((data) => {
+      if (data.affectedRows === 0) {
+        writeError(res, 500, {
+          message:
+            "Id Bantuan tidak ditemukan, Tidak ada detail bantuan yang terhapus",
+        });
+      } else if (data.affectedRows !== 0) {
+        writeResponse(res, null, 201, {
+          message: "Data Bantuan  Berhasil Dihapus",
+          data,
+        });
+      }
+    })
+    .catch((err) => {
+      writeError(res, 500, err);
+    });
+};
+const deleteRelawanBantuan = (req, res) => {
+  const id = req.params.id;
+  detail
+    .deleteRelawanBantuan(id)
+    .then((data) => {
+      if (data.affectedRows === 0) {
+        writeError(res, 500, {
+          message:
+            "Id Bantuan tidak ditemukan, Tidak ada detail bantuan yang terhapus",
+        });
+      } else if (data.affectedRows !== 0) {
+        writeResponse(res, null, 201, {
+          message: "Data Bantuan  Berhasil Dihapus",
+          data,
+        });
+      }
+    })
+    .catch((err) => {
+      writeError(res, 500, err);
+    });
+};
+
+const deleteAllDataBantuan = (req, res) => {
+  const id = req.params.id;
+  detail
+    .deleteAllDataBantuan(id)
+    .then((data) => {
+      if (data.affectedRows === 0) {
+        writeError(res, 500, {
+          message:
+            "Id Bantuan tidak ditemukan, Tidak ada detail bantuan yang terhapus",
+        });
+      } else if (data.affectedRows !== 0) {
+        writeResponse(res, null, 201, {
+          message: "Data Bantuan  Berhasil Dihapus",
+          data,
+        });
+      }
+    })
+    .catch((err) => {
+      writeError(res, 500, err);
+    });
+};
+
 
 module.exports = {
   addBantuan,
@@ -125,4 +190,7 @@ module.exports = {
   getBantuanByCode,
   getRelawanInEvent,
   deleteDetailBantuan,
+deletePenerimaBantuan,
+deleteRelawanBantuan,
+deleteAllDataBantuan,
 };

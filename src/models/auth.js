@@ -66,7 +66,7 @@ const login = (body) => {
   return new Promise((resolve, reject) => {
     const { username, password } = body;
     const qs =
-      "SELECT user.id, user.username, user.password, role.name AS 'role' from user JOIN role ON user.role = role.id WHERE user.username = ?";
+      "SELECT user.id, user.username, user.password,  user.phone , user.isVerify ,user.avatar,role.name AS 'role' from user JOIN role ON user.role = role.id WHERE user.username = ?";
 
     dbConn.query(qs, username, (err, result) => {
       if (err) return reject({ msg: err, status: 500 });
@@ -77,9 +77,9 @@ const login = (body) => {
         // if (err) return reject({ msg: err, status: 500 });
         if (!isPasswordValid)
           return reject({ msg: "Username or Password is Wrong", status: 401 });
-        const { id, username, role } = result[0];
+        const { id, username, role, phone,isVerify } = result[0];
 
-        return resolve({ id, username, role });
+        return resolve({ id, username, role,  phone,isVerify  });
       });
     });
   });
@@ -161,6 +161,26 @@ const getUserByRole = (role) => {
   });
 };
 
+const getUserById = (id) => {
+  const qs =
+    "SELECT user.id, user.username, role.name AS 'role' from user JOIN role ON user.role = role.id WHERE user.id = ?";
+  return new Promise((resolve, reject) => {
+    dbConn.query(qs, role, (err, result) => {
+      if (err) {
+        reject({ status: 500 });
+      } else {
+        if (result.length === 0)
+          return reject({
+            status: 404,
+            success: false,
+            msg: "data not found",
+          });
+        resolve(result);
+      }
+    });
+  });
+};
+
 const getAllUser = () => {
   const qs =
     "SELECT user.id, user.username, role.name AS 'role' from user JOIN role ON user.role = role.id ";
@@ -189,6 +209,7 @@ module.exports = {
   register,
   updateUserById,
   getUserByRole,
+getUserById,
   deleteUser,
   getAllUser,
 };
