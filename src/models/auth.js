@@ -163,7 +163,7 @@ const getUserByRole = (role) => {
 
 const getUserById = (id) => {
   const qs =
-    "SELECT user.id, user.username, role.name AS 'role' from user JOIN role ON user.role = role.id WHERE user.id = ?";
+    "SELECT user.id, user.username, user.phone, user.isVerify, user.avatar, role.name AS 'role' from user JOIN role ON user.role = role.id WHERE user.id = ?";
   return new Promise((resolve, reject) => {
     dbConn.query(qs, id, (err, result) => {
       if (err) {
