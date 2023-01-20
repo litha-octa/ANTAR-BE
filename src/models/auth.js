@@ -143,7 +143,7 @@ const deleteUser = (id) => {
 
 const getUserByRole = (role) => {
   const qs =
-    "SELECT user.id, user.username, role.name AS 'role' from user JOIN role ON user.role = role.id WHERE user.role = ?";
+    "SELECT user.id, user.username, user.phone, user.isVerify, user.avatar, role.name AS 'role' from user JOIN role ON user.role = role.id WHERE user.role = ?";
   return new Promise((resolve, reject) => {
     dbConn.query(qs, role, (err, result) => {
       if (err) {
