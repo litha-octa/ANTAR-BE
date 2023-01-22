@@ -1,12 +1,18 @@
 const dbConn = require("./../../config/db.config");
+const bcrypt = require("bcrypt");
+
 
 const createPosda = (body) => {
   return new Promise((resolve, reject) => {
+   const { password } = body;
     const checkUser = `SELECT * FROM kabinda WHERE id = ?`;
     const checkData = [body.idKabinda];
 
     const qs = "INSERT INTO posda SET ?";
+bcrypt.hash(password, 10, (err, encryptedPass) => {
+      if (err) return reject(err);
 
+      body.password = encryptedPass;
     dbConn.query(checkUser, checkData, (err, result) => {
       if (err) {
         reject({
@@ -50,7 +56,41 @@ const createPosda = (body) => {
             status: 409,
           })
         }
-    }})})}
+    }})})})}
+
+    const loginPosda = (body) => {
+      return new Promise((resolve, reject) => {
+        const { username, password } = body;
+        const qs =
+          "SELECT posda.id, posda.username, posda.name, posda.password,  posda.phone , posda.isVerify , posda.avatar , posda.role FROM posda WHERE posda.username=?";
+
+        dbConn.query(qs, username, (err, result) => {
+          if (err) return reject({ msg: err, status: 500 });
+          console.log(result);
+          if (result.length === 0)
+            return reject({
+              msg: "Username or Password is Wrong",
+              status: 401,
+            });
+          bcrypt.compare(
+            password,
+            result[0].password,
+            (err, isPasswordValid) => {
+              // if (err) return reject({ msg: err, status: 500 });
+              if (!isPasswordValid)
+                return reject({
+                  msg: "Username or Password is Wrong",
+                  status: 401,
+                });
+              const { id, username, role, phone, isVerify } = result[0];
+
+              return resolve({ id, username, role, phone, isVerify });
+            }
+          );
+        });
+      });
+    };
+
 
     const deletePosda = (id) => {
       const qs =
@@ -74,7 +114,7 @@ const createPosda = (body) => {
 
 const getPosdaByKabinda = (id) => {
   const qs =
-    "SELECT posda.id, posda.name, posda.idKabinda, kabinda.name AS kabinda FROM posda JOIN kabinda ON posda.idKabinda = kabinda.id WHERE posda.idKabinda =? ";
+    "SELECT posda.id, posda.name, posda.username, posda.phone, posda.isVerify, posda.avatar, posda.role, role.name AS role, posda.idKabinda, kabinda.name AS kabinda FROM posda JOIN kabinda ON posda.idKabinda = kabinda.id JOIN role ON posda.role = role.id WHERE posda.idKabinda =? ";
   return new Promise((resolve, reject) => {
     dbConn.query(qs,id, (err, result) => {
       if (err) {
@@ -94,7 +134,7 @@ const getPosdaByKabinda = (id) => {
 
 const getPosdaById = (id) => {
   const qs =
-    "SELECT posda.id, posda.name, posda.idKabinda, kabinda.name AS kabinda FROM posda JOIN kabinda ON posda.idKabinda = kabinda.id WHERE posda.id =? ";
+    "SELECT posda.id, posda.name, posda.username, posda.phone, posda.isVerify, posda.avatar, posda.role, role.name AS role, posda.idKabinda, kabinda.name AS kabinda FROM posda JOIN kabinda ON posda.idKabinda = kabinda.id JOIN role ON posda.role = role.id WHERE posda.id =? ";
   return new Promise((resolve, reject) => {
     dbConn.query(qs, id, (err, result) => {
       if (err) {
@@ -112,12 +152,55 @@ const getPosdaById = (id) => {
   });
 };
 
+const getAllPosda = () => {
+  const qs =
+    "SELECT posda.id, posda.name, posda.username, posda.phone, posda.isVerify, posda.avatar, posda.role, role.name AS role, posda.idKabinda, kabinda.name AS kabinda FROM posda JOIN kabinda ON posda.idKabinda = kabinda.id JOIN role ON posda.role = role.id";
+  return new Promise((resolve, reject) => {
+    dbConn.query(qs, (err, result) => {
+      if (err) {
+        reject({ status: 500 });
+      } else {
+        if (result.length === 0)
+          return reject({
+            status: 401,
+            success: false,
+            msg: "Data Bantuan Tidak Ditemukan",
+          });
+        resolve(result);
+      }
+    });
+  });
+};
+
+const updatePosdaById = (data, id) => {
+  const qs = "UPDATE posda SET ? WHERE id = ? ";
+  const updated = [data, id];
+  return new Promise((resolve, reject) => {
+    dbConn.query(qs, updated, (err, result) => {
+      if (err) {
+        reject({
+          status: 500,
+        });
+      } else {
+        if (result.affectedRows === 0)
+          return reject({
+            status: 401,
+            success: false,
+            msg: "This account does not exist",
+          });
+        resolve(result);
+      }
+    });
+  });
+};
+
 
 module.exports = {
   createPosda,
-  // getAll,
+  loginPosda,
+  getAllPosda,
   getPosdaById,
   getPosdaByKabinda,
-  // updateById,
+  updatePosdaById,
   deletePosda,
 };

@@ -9,6 +9,7 @@ const jenis = require('../controllers/jenisBantuan')
 const detail = require("../controllers/detailBantuan"); 
 const kabinda = require("../controllers/kabinda")
 const posda = require("../controllers/posda");
+const relawan = require("../controllers/relawan");
 
 //LOGIN
 router.post("/login", auth.login);
@@ -46,16 +47,30 @@ router.delete("/bantuan/detail/:id", detail.deleteDetailBantuan);
 router.delete("/bantuan/penerima/:id", detail.deleteDetailBantuan);
 router.delete("/bantuan/relawan/:id", detail.deleteDetailBantuan);
 
-router.post('/kabinda', kabinda.createKabinda);
+router.post("/kabinda", kabinda.createKabinda);
+router.post('/kabinda/auth', kabinda.loginKabinda);
 router.patch("/kabinda/:id", multerUpload.any(), kabinda.updateKabindaById);
 router.delete("/kabinda/:id", kabinda.deleteKabinda);
 router.get("/kabinda/:id", kabinda.getKabindaById);
 router.get("/kabinda", kabinda.getKabinda);
 
-router.post ('/posda',posda.createPosda )
+router.post ('/posda',posda.createPosda)
+router.post("/posda/auth", posda.loginPosda);
 router.delete("/posda/:id", posda.deletePosda);
+router.patch("/posda/:id", multerUpload.any(), posda.updatePosdaById);
 router.get("/posda/kabinda/:id", posda.getPosdaByKabinda);
 router.get("/posda/:id", posda.getPosdaById);
+router.get("/posda", posda.getAllPosda);
+
+router.post("/relawan", multerUpload.any(), relawan.createRelawan);
+router.post("/relawan/auth", relawan.loginRelawan);
+router.delete("/relawan/:id", relawan.deleteRelawan);
+router.patch("/relawan/:id", multerUpload.any(), relawan.updateRelawanById);
+router.get("/relawan", relawan.getAllRelawan);
+router.get("/relawan/:id", relawan.getRelawanById);
+router.get("/relawan/posda/:posda", relawan.getRelawanByPosda);
+router.get("/relawan/kabinda/:kabinda", relawan.getRelawanByKabinda);
+
 
 
 module.exports = router;

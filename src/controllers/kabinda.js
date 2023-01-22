@@ -14,11 +14,26 @@ const createKabinda = (req, res) => {
     });
 };
 
+const loginKabinda = (req, res) => {
+  kabindaModel
+    .loginKabinda(req.body)
+    .then((data) => {
+      writeResponse(res, null, 200, {
+        message: "Proses Login Berhasil",
+        data,
+      });
+    })
+    .catch((err) => {
+      writeError(res, err.status, err.msg);
+    });
+};
+
+
 const updateKabindaById = (req, res) => {
-//   const { files } = req;
-//   const avatar = files.length > 0 ? `/images/${files[0].filename}` : null;
-//   const data = files.length > 0 ? { ...req.body, avatar } : { ...req.body };
-const data = req.body
+  const { files } = req;
+  const avatar = files.length > 0 ? `/images/${files[0].filename}` : null;
+  const data = files.length > 0 ? { ...req.body, avatar } : { ...req.body };
+// const data = req.body
   const userid = req.params.id;
   kabindaModel
     .updateKabindaById(data, userid)
@@ -88,6 +103,7 @@ const getKabinda = (req, res) => {
 
 module.exports = {
   createKabinda,
+  loginKabinda,
   updateKabindaById,
   deleteKabinda,
   getKabindaById,
