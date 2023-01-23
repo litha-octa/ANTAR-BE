@@ -62,7 +62,7 @@ bcrypt.hash(password, 10, (err, encryptedPass) => {
       return new Promise((resolve, reject) => {
         const { username, password } = body;
         const qs =
-          "SELECT posda.id, posda.username, posda.name, posda.password,  posda.phone , posda.isVerify , posda.avatar , posda.role FROM posda WHERE posda.username=?";
+          "SELECT posda.id, posda.username, posda.name, posda.password,  posda.phone , posda.isVerify , posda.avatar , role.name AS role FROM posda JOIN role ON porda.role =role.id WHERE posda.username=?";
 
         dbConn.query(qs, username, (err, result) => {
           if (err) return reject({ msg: err, status: 500 });

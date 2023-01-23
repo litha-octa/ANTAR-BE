@@ -10,6 +10,7 @@ const detail = require("../controllers/detailBantuan");
 const kabinda = require("../controllers/kabinda")
 const posda = require("../controllers/posda");
 const relawan = require("../controllers/relawan");
+const newTask = require ('../controllers/bantuan')
 
 //LOGIN
 router.post("/login", auth.login);
@@ -40,6 +41,7 @@ router.post("/bantuan/penerima", multerUpload.any(), detail.addPenerimaBantuan);
 router.post("/bantuan/relawan", detail.addRelawanBantuan);
 router.get("/bantuan/:id", detail.getBantuanByCode);
 router.get("/bantuan", detail.getAllBantuan);
+router.get("/bantuan/penerima", detail.getAllPenerima);
 router.get("/bantuan/riwayat/:id", detail.getRelawanInEvent);
 
 router.delete("/bantuan/delete/:id", detail.deleteAllDataBantuan);
@@ -71,6 +73,10 @@ router.get("/relawan/:id", relawan.getRelawanById);
 router.get("/relawan/posda/:posda", relawan.getRelawanByPosda);
 router.get("/relawan/kabinda/:kabinda", relawan.getRelawanByKabinda);
 
-
+router.post("/new", multerUpload.any(), newTask.addBantuan);
+router.patch("/new/:id", multerUpload.any(), newTask.update);
+router.delete("/new/:id", newTask.deleteBantuan);
+router.get("/new", newTask.getAll);
+router.get("/new/:id", newTask.getbyCode);
 
 module.exports = router;

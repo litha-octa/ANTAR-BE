@@ -22,24 +22,23 @@ const addPenerimaBantuan = (body) => {
               status: 409,
             });
           }
-          else if (body.code === result[0].code || body.nik ===result[0].nik) {
-           dbConn.query(qs, body, (err, result) => {
-             if (err) {
-               reject({ status: 500 });
-             } else {
-               resolve(result);
-             }
-           });
+          else if (body.code === result[0].code || body.nik === result[0].nik) {
+            reject({
+              success: false,
+              conflict: "code",
+              msg: "data sudah tersedia",
+              status: 409,
+            });
           }
-          else{
-          dbConn.query(qs, body, (err, result) => {
-            if (err) {
-              reject({ status: 500 });
-            } else {
-              resolve(result);
-            }
-          });
-        }
+          //  else {
+          //   dbConn.query(qs, body, (err, result) => {
+          //     if (err) {
+          //       reject({ status: 500 });
+          //     } else {
+          //       resolve(result);
+          //     }
+          //   });
+          // }
         }else if (result.length===0){
           dbConn.query(qs, body, (err, result) => {
             if (err) {
@@ -247,6 +246,27 @@ const getAllBantuan = () => {
   });
 };
 
+const getAllPenerima = () => {
+  const qs =
+  'SELECT * from penerima_bantuan';
+    // "SELECT detail_bantuan.code, detail_bantuan.title, jenis_bantuan.nama AS jenis, detail_bantuan.status, detail_bantuan.start_date, detail_bantuan.finish_date from detail_bantuan JOIN jenis_bantuan ON detail_bantuan.id_jenis = jenis_bantuan.id";
+  return new Promise((resolve, reject) => {
+    dbConn.query(qs, (err, result) => {
+      if (err) {
+        reject({ status: 500 });
+      } else {
+        if (result.length === 0)
+          return reject({
+            status: 401,
+            success: false,
+            msg: "Data Bantuan Tidak Ditemukan",
+          });
+        resolve(result);
+      }
+    });
+  });
+};
+
 const getBantuanByCode = (id) => {
   const qs =
     "SELECT detail_bantuan.code, detail_bantuan.title, jenis_bantuan.nama AS jenis, detail_bantuan.status, detail_bantuan.start_date, detail_bantuan.finish_date from detail_bantuan JOIN jenis_bantuan ON detail_bantuan.id_jenis = jenis_bantuan.id WHERE detail_bantuan.code = ? ";
@@ -313,6 +333,7 @@ module.exports = {
   addPenerimaBantuan,
   addRelawanBantuan,
   getAllBantuan,
+  getAllPenerima,
   getBantuanByCode,
   getRelawanInEvent,
 deleteAllDataBantuan,

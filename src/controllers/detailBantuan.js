@@ -22,6 +22,7 @@ const addPenerimaBantuan = (req, res) => {
   const { files } = req;
   const img = files.length > 0 ? `/images/${files[0].filename}` : null;
   const data = files.length > 0 ? { ...req.body, img } : { ...req.body };
+  // const data = req.body
   detail
     .addPenerimaBantuan(data)
     .then((data) => {
@@ -53,6 +54,20 @@ const addRelawanBantuan = (req, res) => {
 const getAllBantuan = (req, res) => {
   detail
     .getAllBantuan()
+    .then((data) => {
+      writeResponse(res, null, 201, {
+        message: " Bantuan Berhasil Ditemukan",
+        data,
+      });
+    })
+    .catch((err) => {
+      writeError(res, 500, err);
+    });
+};
+
+const getAllPenerima = (req, res) => {
+  detail
+    .getAllPenerima()
     .then((data) => {
       writeResponse(res, null, 201, {
         message: " Bantuan Berhasil Ditemukan",
@@ -187,6 +202,7 @@ module.exports = {
   addPenerimaBantuan,
   addRelawanBantuan,
   getAllBantuan,
+  getAllPenerima,
   getBantuanByCode,
   getRelawanInEvent,
   deleteDetailBantuan,
