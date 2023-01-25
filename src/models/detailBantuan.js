@@ -132,7 +132,7 @@ const addBantuan = (body) => {
               }
             });
           }
-        } else if(result.length === 0) {
+        } else if (result.length === 0){
           dbConn.query(qs, body, (err, result) => {
             if (err) {
               reject({ status: 500 });

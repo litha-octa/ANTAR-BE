@@ -7,12 +7,20 @@ const createRelawan = (body) => {
     const checkUser = `SELECT * FROM relawan WHERE username = ? OR phone = ?`;
     const checkData = [body.username, body.phone];
 
+     const qs2 = "INSERT INTO user (id,username,password, phone,isVerify)  ?";
+     const data = [
+       body.id,
+       body.username,
+       body.password,
+       body.phone,
+       body.isVerify,
+     ];
     const qs = "INSERT INTO relawan SET ?";
     bcrypt.hash(password, 10, (err, encryptedPass) => {
       if (err) return reject(err);
 
       body.password = encryptedPass;
-
+      
       // dbConn.query(qs, body, (err, result) => {
       dbConn.query(checkUser, checkData, (err, result) => {
         if (err) {
@@ -46,17 +54,21 @@ const createRelawan = (body) => {
               });
             }
           } else if (result.length === 0) {
+            
             dbConn.query(qs, body, (err, result) => {
               if (err) {
                 reject({ status: 500 });
               } else {
                 resolve(result);
+               
               }
             });
           }
         }
       });
+       
     });
+    
   });
 };
 
@@ -140,7 +152,7 @@ const deleteRelawan = (id) => {
 
 const getAllRelawan = () => {
   const qs =
-    "SELECT relawan.id, relawan.username, relawan.name , relawan.phone , relawan.isVerify, relawan.posda, relawan.kabinda, relawan.area, relawan.recruitBy ,role.name AS 'role' from relawan JOIN role ON relawan.role = role.id ";
+    "SELECT relawan.id, relawan.username, relawan.avatar ,relawan.name , relawan.phone , relawan.isVerify, relawan.posda, relawan.kabinda, relawan.area, relawan.recruitBy ,role.name AS 'role' from relawan JOIN role ON relawan.role = role.id ";
   return new Promise((resolve, reject) => {
     dbConn.query(qs, (err, result) => {
       if (err) {
@@ -160,7 +172,7 @@ const getAllRelawan = () => {
 
 const getRelawanById = (id) => {
   const qs =
-    "SELECT relawan.id, relawan.username, relawan.name , relawan.phone , relawan.isVerify, relawan.posda, relawan.kabinda, relawan.area, relawan.recruitBy ,role.name AS 'role' from relawan JOIN role ON relawan.role = role.id WHERE relawan.id = ?";
+    "SELECT relawan.id, relawan.username, relawan.name , relawan.avatar,relawan.phone , relawan.isVerify, relawan.posda, relawan.kabinda, relawan.area, relawan.recruitBy ,role.name AS 'role' from relawan JOIN role ON relawan.role = role.id WHERE relawan.id = ?";
   return new Promise((resolve, reject) => {
     dbConn.query(qs, id, (err, result) => {
       if (err) {
@@ -181,7 +193,7 @@ const getRelawanById = (id) => {
 
 const getRelawanByPosda = (id) => {
   const qs =
-    "SELECT relawan.id, relawan.username, relawan.name , relawan.phone , relawan.isVerify, relawan.posda, relawan.kabinda, relawan.area, relawan.recruitBy ,role.name AS 'role' from relawan JOIN role ON relawan.role = role.id WHERE relawan.posda =?";
+    "SELECT relawan.id, relawan.username, relawan.name , relawan.avatar, relawan.phone , relawan.isVerify, relawan.posda, relawan.kabinda, relawan.area, relawan.recruitBy ,role.name AS 'role' from relawan JOIN role ON relawan.role = role.id WHERE relawan.posda =?";
   return new Promise((resolve, reject) => {
     dbConn.query(qs, id ,(err, result) => {
       if (err) {
@@ -201,7 +213,7 @@ const getRelawanByPosda = (id) => {
 
 const getRelawanByKabinda = (id) => {
   const qs =
-    "SELECT relawan.id, relawan.username, relawan.name , relawan.phone , relawan.isVerify, relawan.posda, relawan.kabinda, relawan.area, relawan.recruitBy ,role.name AS 'role' from relawan JOIN role ON relawan.role = role.id WHERE relawan.kabinda =?";
+    "SELECT relawan.id, relawan.username, relawan.name , relawan.avatar, relawan.phone , relawan.isVerify, relawan.posda, relawan.kabinda, relawan.area, relawan.recruitBy ,role.name AS 'role' from relawan JOIN role ON relawan.role = role.id WHERE relawan.kabinda =?";
   return new Promise((resolve, reject) => {
     dbConn.query(qs, id, (err, result) => {
       if (err) {

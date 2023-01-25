@@ -15,7 +15,7 @@ const newTask = require ('../controllers/bantuan')
 //LOGIN
 router.post("/login", auth.login);
 //REGISTER
-router.post("/register", auth.register);
+router.post("/register", multerUpload.any(), auth.register);
 //UPDATE
 router.patch("/user/update/:id", multerUpload.any(), auth.updateUserById);
 //GET USER BY ROLE
