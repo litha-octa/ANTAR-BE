@@ -94,6 +94,22 @@ const getBantuanByCode = (req, res) => {
     });
 };
 
+const getBantuanByStatus = (req, res) => {
+  const id = req.params.id;
+  detail
+    .getBantuanByStatus(id)
+    .then((data) => {
+      writeResponse(res, null, 201, {
+        message: " Bantuan Berhasil Ditemukan",
+        data,
+      });
+    })
+    .catch((err) => {
+      writeError(res, 500, err);
+    });
+};
+
+
 const getRelawanInEvent = (req, res) => {
   const id = req.params.id;
   detail
@@ -206,7 +222,8 @@ module.exports = {
   getBantuanByCode,
   getRelawanInEvent,
   deleteDetailBantuan,
-deletePenerimaBantuan,
-deleteRelawanBantuan,
-deleteAllDataBantuan,
+  deletePenerimaBantuan,
+  deleteRelawanBantuan,
+  deleteAllDataBantuan,
+  getBantuanByStatus,
 };
