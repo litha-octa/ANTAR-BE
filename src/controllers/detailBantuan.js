@@ -79,6 +79,36 @@ const getAllPenerima = (req, res) => {
     });
 };
 
+const getPenerimaByCode = (req, res) => {
+  const id = req.params.id
+  detail
+    .getPenerimaByCode(id)
+    .then((data) => {
+      writeResponse(res, null, 201, {
+        message: " Bantuan Berhasil Ditemukan",
+        data,
+      });
+    })
+    .catch((err) => {
+      writeError(res, 500, err);
+    });
+};
+
+const getPenerimaByNik = (req, res) => {
+  const id = req.params.id;
+  detail
+    .getPenerimaByNik(id)
+    .then((data) => {
+      writeResponse(res, null, 201, {
+        message: " Bantuan Berhasil Ditemukan",
+        data,
+      });
+    })
+    .catch((err) => {
+      writeError(res, 500, err);
+    });
+};
+
 const getBantuanByCode = (req, res) => {
   const id = req.params.id
   detail
@@ -212,6 +242,29 @@ const deleteAllDataBantuan = (req, res) => {
     });
 };
 
+const updateByCode = (req, res) => {
+  const { files } = req;
+  const img = files.length > 0 ? `/images/${files[0].filename}` : null;
+  const data = files.length > 0 ? { ...req.body,img } : { ...req.body };
+  const userid = req.params.id;
+ detail
+    .updateByCode(data, userid)
+    .then((data) => {
+      if (data.changedRows === 0) {
+        writeResponse(res, null, 201, {
+          message: "Tidak Ada Data yang Diperbaharui",
+        });
+      } else {
+        writeResponse(res, null, 201, {
+          message: "Data User Berhasil Diperbaharui",
+        });
+      }
+    })
+    .catch((err) => {
+      writeError(res, 500, err);
+    });
+};
+
 
 module.exports = {
   addBantuan,
@@ -219,11 +272,15 @@ module.exports = {
   addRelawanBantuan,
   getAllBantuan,
   getAllPenerima,
+  getPenerimaByCode,
+  getPenerimaByNik,
   getBantuanByCode,
   getRelawanInEvent,
   deleteDetailBantuan,
   deletePenerimaBantuan,
+  updateByCode,
   deleteRelawanBantuan,
   deleteAllDataBantuan,
   getBantuanByStatus,
+  
 };

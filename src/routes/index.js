@@ -38,11 +38,15 @@ router.delete("/jenis/delete/:id", jenis.deleteJenisBantuan);
 //CREATE BANTUAN
 router.post("/bantuan/create", multerUpload.any(), detail.addBantuan);
 router.post("/bantuan/penerima", multerUpload.any(), detail.addPenerimaBantuan);
+router.patch("/bantuan/update/:id", multerUpload.any(), detail.updateByCode);
+
 router.post("/bantuan/relawan", detail.addRelawanBantuan);
 router.get("/bantuan/:id", detail.getBantuanByCode);
 router.get("/bantuan/status/:id", detail.getBantuanByStatus);
 router.get("/bantuan", detail.getAllBantuan);
-router.get("/bantuan/penerima", detail.getAllPenerima);
+router.get("/penerimaBantuan", detail.getAllPenerima);
+router.get("/penerimaBantuan/:id", detail.getPenerimaByNik);
+router.get("/penerimaBantuan/code/:id", detail.getPenerimaByCode);
 router.get("/bantuan/riwayat/:id", detail.getRelawanInEvent);
 
 router.delete("/bantuan/delete/:id", detail.deleteAllDataBantuan);
