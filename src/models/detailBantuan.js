@@ -229,7 +229,7 @@ const deletePenerimaBantuan = (id) => {
 
 const getAllBantuan = () => {
   const qs =
-    "SELECT detail_bantuan.code, detail_bantuan.img,detail_bantuan.title,detail_bantuan.catatan, detail_bantuan.kategori, jenis_bantuan.nama AS jenis, penerima_bantuan.name AS penerima, penerima_bantuan.nik AS nik,  detail_bantuan.status, detail_bantuan.start, detail_bantuan.finish FROM detail_bantuan JOIN jenis_bantuan ON detail_bantuan.id_jenis = jenis_bantuan.id JOIN penerima_bantuan ON detail_bantuan.code = penerima_bantuan.code";
+    "SELECT detail_bantuan.code, detail_bantuan.title,detail_bantuan.start,detail_bantuan.finish, detail_bantuan.status,penerima_bantuan.name AS penerima from detail_bantuan JOIN penerima_bantuan ON detail_bantuan.code = penerima_bantuan.code";
   return new Promise((resolve, reject) => {
     dbConn.query(qs, (err, result) => {
        if (err) {
@@ -309,9 +309,8 @@ const getPenerimaByNik = (nik) => {
 
 const getBantuanByCode = (id) => {
   const qs =
-    "SELECT detail_bantuan.code,detail_bantuan.img, detail_bantuan.title,detail_bantuan.catatan, jenis_bantuan.nama AS jenis, detail_bantuan.kategori, penerima_bantuan.name AS penerima, penerima_bantuan.nik, detail_bantuan.status, detail_bantuan.start, detail_bantuan.finish, detail_bantuan.latitude, detail_bantuan.longitude, detail_bantuan.address, detail_bantuan.pinpoint from detail_bantuan JOIN jenis_bantuan ON detail_bantuan.id_jenis = jenis_bantuan.id JOIN penerima_bantuan ON detail_bantuan.code = penerima_bantuan.code WHERE detail_bantuan.code = ?";
-
-    // "SELECT detail_bantuan.code, detail_bantuan.title, jenis_bantuan.nama AS jenis, detail_bantuan.status, detail_bantuan.start_date, detail_bantuan.finish_date from detail_bantuan JOIN jenis_bantuan ON detail_bantuan.id_jenis = jenis_bantuan.id WHERE detail_bantuan.code = ? ";
+'SELECT * FROM detail_bantuan WHERE code = ?'
+    // "SELECT detail_bantuan.code,detail_bantuan.img, detail_bantuan.title,detail_bantuan.catatan, jenis_bantuan.nama AS jenis, detail_bantuan.kategori, penerima_bantuan.name AS penerima, penerima_bantuan.nik, detail_bantuan.status, detail_bantuan.start, detail_bantuan.finish, detail_bantuan.latitude, detail_bantuan.longitude, detail_bantuan.address, detail_bantuan.pinpoint from detail_bantuan JOIN jenis_bantuan ON detail_bantuan.id_jenis = jenis_bantuan.id JOIN penerima_bantuan ON detail_bantuan.code = penerima_bantuan.code WHERE detail_bantuan.code = ?";
   return new Promise((resolve, reject) => {
     dbConn.query(qs,id, (err, result) => {
       if (err) {
