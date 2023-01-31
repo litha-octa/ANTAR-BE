@@ -141,9 +141,9 @@ const getBantuanByStatus = (req, res) => {
 
 
 const getRelawanInEvent = (req, res) => {
-  const id = req.params.id;
+  // const id = req.params.id;
   detail
-    .getRelawanInEvent(id)
+    .getRelawanInEvent()
     .then((data) => {
       writeResponse(res, null, 201, {
         message: "Data Relawan Berhasil Ditemukan",

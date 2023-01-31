@@ -47,7 +47,8 @@ router.get("/bantuan", detail.getAllBantuan);
 router.get("/penerimaBantuan", detail.getAllPenerima);
 router.get("/penerimaBantuan/:id", detail.getPenerimaByNik);
 router.get("/penerimaBantuan/code/:id", detail.getPenerimaByCode);
-router.get("/bantuan/riwayat/:id", detail.getRelawanInEvent);
+router.get("/bantuan/riwayat", detail.getRelawanInEvent);
+// router.get("/bantuan/riwayat/:id", detail.getRelawanInEvent);
 
 router.delete("/bantuan/delete/:id", detail.deleteAllDataBantuan);
 router.delete("/bantuan/detail/:id", detail.deleteDetailBantuan);

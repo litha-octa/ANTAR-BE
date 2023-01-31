@@ -229,7 +229,7 @@ const deletePenerimaBantuan = (id) => {
 
 const getAllBantuan = () => {
   const qs =
-    "SELECT detail_bantuan.code, detail_bantuan.img,detail_bantuan.title,detail_bantuan.catatan, detail_bantuan.kategori, jenis_bantuan.nama AS jenis, penerima_bantuan.name AS penerima, penerima_bantuan.nik AS nik,  detail_bantuan.status, detail_bantuan.start, detail_bantuan.finish from detail_bantuan JOIN jenis_bantuan ON detail_bantuan.id_jenis = jenis_bantuan.id JOIN penerima_bantuan ON detail_bantuan.code = penerima_bantuan.code";
+    "SELECT detail_bantuan.code, detail_bantuan.img,detail_bantuan.title,detail_bantuan.catatan, detail_bantuan.kategori, jenis_bantuan.nama AS jenis, penerima_bantuan.name AS penerima, penerima_bantuan.nik AS nik,  detail_bantuan.status, detail_bantuan.start, detail_bantuan.finish FROM detail_bantuan JOIN jenis_bantuan ON detail_bantuan.id_jenis = jenis_bantuan.id JOIN penerima_bantuan ON detail_bantuan.code = penerima_bantuan.code";
   return new Promise((resolve, reject) => {
     dbConn.query(qs, (err, result) => {
        if (err) {
@@ -376,11 +376,10 @@ const getBantuanByStatus = (id) => {
 
 
 
-const getRelawanInEvent = (id) => {
-      const qs =  "SELECT relawan_bantuan.code AS code ,relawan_bantuan.id AS id,relawan.name, relawan.phone, relawan.posda, relawan.area, relawan.recruitBy from relawan INNER JOIN relawan_bantuan ON relawan_bantuan.id = relawan.id WHERE (relawan_bantuan.code=? OR relawan_bantuan.id )";
-
+const getRelawanInEvent = () => {
+      const qs =  "SELECT relawan_bantuan.code AS code ,relawan_bantuan.id AS id,relawan.name, relawan.phone, relawan.posda, relawan.area, relawan.recruitBy from relawan JOIN relawan_bantuan ON relawan_bantuan.id = relawan.id";
     return new Promise((resolve, reject) => {
-    dbConn.query(qs, id, (err, result) => {
+    dbConn.query(qs, (err, result) => {
       if (err) {
         reject({ status: 500 });
       } else {
@@ -396,12 +395,12 @@ const getRelawanInEvent = (id) => {
   });
 };
 
-// const getRiwayatBantuan = () => {
+// const getRelawanBantuanByCode = (id) => {
 //   const qs =
-//     "SELECT relawan_bantuan.code AS code ,relawan_bantuan.id AS id,relawan.name, relawan.phone, relawan.posda, relawan.area, relawan.recruitBy from relawan INNER JOIN relawan_bantuan ON relawan_bantuan.id = relawan.id WHERE (relawan_bantuan.code=? OR relawan_bantuan.id )";
+//     "SELECT relawan_bantuan.code AS code ,relawan_bantuan.id AS id,relawan.name, relawan.phone, relawan.posda, relawan.area, relawan.recruitBy from relawan INNER JOIN relawan_bantuan ON relawan_bantuan.id = relawan.id WHERE relawan_bantuan.code=?";
 
 //   return new Promise((resolve, reject) => {
-//     dbConn.query(qs, (err, result) => {
+//     dbConn.query(qs, id, (err, result) => {
 //       if (err) {
 //         reject({ status: 500 });
 //       } else {
@@ -428,6 +427,7 @@ module.exports = {
   getPenerimaByCode,
   getBantuanByCode,
   getRelawanInEvent,
+  // getRelawanBantuanByCode,
 deleteAllDataBantuan,
   deleteDetailBantuan,
 deletePenerimaBantuan,
