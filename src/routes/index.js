@@ -52,8 +52,8 @@ router.get("/bantuan/riwayat", detail.getRelawanInEvent);
 
 router.delete("/bantuan/delete/:id", detail.deleteAllDataBantuan);
 router.delete("/bantuan/detail/:id", detail.deleteDetailBantuan);
-router.delete("/bantuan/penerima/:id", detail.deleteDetailBantuan);
-router.delete("/bantuan/relawan/:id", detail.deleteDetailBantuan);
+router.delete("/bantuan/penerima/:id", detail.deletePenerimaBantuan);
+router.delete("/bantuan/relawan/:id", detail.deleteRelawanBantuan);
 
 router.post("/kabinda", kabinda.createKabinda);
 router.post('/kabinda/auth', kabinda.loginKabinda);
